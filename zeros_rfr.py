@@ -49,6 +49,7 @@ fig1 = plt.figure()
 def cvtrain(splitarr, i, j, k):
     rmse = []
     importance=[]
+    correlation=[]
     collect = []
     # only use for selection
     rf = RandomForestRegressor(n_estimators=i, oob_score=True,
@@ -104,22 +105,29 @@ def cvtrain(splitarr, i, j, k):
         plt.title('test fold %d' %(6-i))
         #plt.show()
         '''
+        predict=rf.predict(testd)
         # append rmse for each cross-validation
-        rmse.append(sqrt(mean_squared_error(testt, rf.predict(testd))))
-        importance.append(rf.feature_importances_)
+        rmse.append(sqrt(mean_squared_error(testt, predict)))
+        df1=pd.DataFrame(testt,columns=['a'])
+        df2 = pd.DataFrame(predict,columns=['b'])
+        #df1=np.float64(df1)
+        #df2=np.float64(df2)
+
+        correlation.append(df1['a'].astype('float64').corr(df2['b'].astype('float64')))#get the correlation between target and caculated
+        #print(df1[0].corr(df2[0]))
+        #correlation.append()
+        #importance.append(rf.feature_importances_)
+        rmse.append(sqrt(mean_squared_error(testt, rf.predict(testd))))#get the rmse between target and caculated
         i = i + 1
 
     #importance=np.vstack(importance)
     #plt.show()
     #fig1.savefig('5-fold parity.png')
-    return importance
+    return np.average(rmse),np.average(correlation)
     #return rmse,importance
     #return np.average(rmse)
 
-
-#print(cvtrain(splitarr,200,5,1))
-cvtrain(splitarr,200,5,1)
-
+'''
 ###new parameters
 #print(cvtrain(splitarr,200,5,1))
 #get 5-fold importance
@@ -127,7 +135,7 @@ ff_imp=cvtrain(splitarr,200,5,1)
 ff_imp_avg=np.average(ff_imp,axis=0)
 ff_imp_std=np.std(ff_imp,axis=0)
 x_pos=range(21,90)
-'''
+
 #x_pos=range(21,90)
 x_pos=range(0,9)
 fig, ax = plt.subplots( figsize=(15, 12), dpi=200)
@@ -141,12 +149,10 @@ plt.ylabel('importance')
 plt.title('importance of features([0,1,2,3,5,6,47,48,49]) rfr-5fold')
 plt.savefig('importance of features([0,1,2,3,5,6,47,48,49]) rfr-5fold.png')
 plt.show()
-'''
+
 print("Features sorted by their rank(Ridge):")
 print(sorted(zip(map(lambda x: round(x, 4), ff_imp_avg), x_pos,map(lambda x: round(x, 5), ff_imp_std)),reverse=True))
-
-
-
+'''
 
 
 
@@ -158,7 +164,6 @@ print(sorted(zip(map(lambda x: round(x, 4), ff_imp_avg), x_pos,map(lambda x: rou
 # print(rf.score(testd,testt))
 # mset=np.square(testt-p).mean(0)
 # print(mset)
-
 
 #self-written grid search for parameter
 #estimator
@@ -172,11 +177,12 @@ bestpara=[1e5 for _ in range(4)]
 for i in range(len(e)):
     for j in range(len(d)):
         for k in range(len(f)):
-            start = time.process_time()
+            #start = time.process_time()
             avg_rmse = 0
             for q in range(1):
                 print(i,j,k)
-                temp_rmse=cvtrain(splitarr,e[i],d[j],f[k])
+                print('e=',e[i],'d=',d[j],'f=',f[k])
+                temp_rmse, cor=cvtrain(splitarr,e[i],d[j],f[k])
                 #avg_rmse=temp_rmse+avg_rmse
             avg_rmse=temp_rmse
             if bestpara[3]>avg_rmse:
@@ -185,9 +191,9 @@ for i in range(len(e)):
                 bestpara[2]=k
                 bestpara[3]=avg_rmse
             print('current para',bestpara)
-            print("current position:i:%d, j:%d, k:%d, rmse:%s" %(i,j,k,avg_rmse))
-            end = time.process_time()
-            print('time used:', end - start)
+            print("current position:i:%d, j:%d, k:%d, rmse:%s, cor:%s" %(i,j,k,avg_rmse,cor))
+            #end = time.process_time()
+            #print('time used:', end - start)
             print()
 
 print(bestpara)
