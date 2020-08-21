@@ -184,6 +184,7 @@ for i in range(len(e)):
                 print('e=',e[i],'d=',d[j],'f=',f[k])
                 temp_rmse, cor=cvtrain(splitarr,e[i],d[j],f[k])
                 #avg_rmse=temp_rmse+avg_rmse
+                
             avg_rmse=temp_rmse
             if bestpara[3]>avg_rmse:
                 bestpara[0]=i
