@@ -79,19 +79,24 @@ splitarr = np.arange(x.shape[0])
 fig1=plt.figure()
 def cvtrain(splitarr,i,j,k):
     rmse = []
-
     #only use for selection
     rf = RandomForestRegressor(n_estimators=i, oob_score=True,
                                max_depth=j, max_features=k,
                                n_jobs=-1,random_state=0,bootstrap=True)
     i = 1
     for train_index , test_index in kf.split(splitarr):
-
+        '''
         #set up train and test set
         traind=x[train_index,:]
         traint=y[train_index]
         testd=x[test_index,:]
         testt=y[test_index]
+        '''
+        traind = x[ :]
+        traint = y[:]
+        testd = x[ :]
+        testt = y[:]
+
         #train and get rmse
         rf.fit(traind, traint)
         y_=rf.predict(testd)

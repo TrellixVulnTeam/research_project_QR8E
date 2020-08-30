@@ -62,11 +62,16 @@ for train_index , test_index in kf.split(splitarr):
     i=1
     #set up train and test set
     #training data and target
-    traind=x[train_index,:]
-    traint=y[train_index]
+    #####traind=x[train_index,:]
+    #####traint=y[train_index]
     #testing data and target
-    testd=x[test_index,:]
-    testt=y[test_index]
+    ######testd=x[test_index,:]
+    ######testt=y[test_index]
+
+    traind=x[:]
+    traint = y[:]
+    testd = x[:]
+    testt = y[:]
     #train and get rmse
     df = pd.DataFrame(testd)
     # Using Pearson Correlation
@@ -75,11 +80,12 @@ for train_index , test_index in kf.split(splitarr):
     cor = df.corr()#find the correlation with itself
     start_point = randint(0, 69, 1)#generate start point,will be a selected point
     start_point = start_point[0]
+    start_point=40
     print(start_point)
     #function: use to find the correlated(linear) feature
     ##lower half of the tri
     for i in range(start_point,len(cor.columns)):
-        for j in range(i):
+        for j in range(start_point,i):
             #check left-down side
             #if there is one value larger than thresold
             #then record the row(feature) 0.9 is the threshold
@@ -93,7 +99,7 @@ for train_index , test_index in kf.split(splitarr):
 
     ##upper half of the tri
     for i in range(0,start_point):
-        for j in range(1,len(cor.columns)):
+        for j in range(i+1,len(cor.columns)):
             #check left-down side
             if abs(cor.iloc[i,j])>0.9:
                 colname = cor.columns[i]

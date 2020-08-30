@@ -49,7 +49,7 @@ y=target;
 #x=(x_temp-tmin)/(tmax-tmin)
 #x=x[:,:]
 x=x_temp
-#x=x[:,21:90]
+x=x[:,21:90]
 kf = KFold(n_splits=5, shuffle=False)
 #create array for split
 splitarr = np.arange(x.shape[0])
@@ -57,17 +57,27 @@ collect=[]
 search1=[43, 76,25,77,83,24,87,82,80,46,45,74,42,57,64,73,69,65,58,70,22,75,28,44,33,79,78,62,89,86]#start
 search2=[24, 47,23, 69, 22, 26,27,68]#target
 df=pd.DataFrame(x)
-print(df.iloc[2:23])
+#print(df.iloc[2:23])
 
 # Using Pearson Correlation
 ###fig, axes = plt.subplots(nrows=i, ncols=1, figsize=(15, 15), dpi=300)
 corr_col=[]
+####--all featrue list
+l=[]
+for i in range(69):
+    l.append(i)
+l2=[str(x) for x in l]
+df.columns=l2
 #set the correlated data
 #cor = df[['43'], '76','25','77','83','24','87','82','80','46',
 #         '45','74','42','57','64','73','69','65','58','70','22','75'].corr(df['24','47','23', '69', '22', '26','27','68'])
-#cor=df[89].corr()
-#sns.heatmap(cor, cmap='seismic', linecolor='black', linewidths='0.1')
-#plt.show()
+cor=df.corr()
+cor_now=cor.loc['0']
+
+p=cor_now.values.reshape(69,1)
+sns.heatmap(p,  linecolor='black', linewidths='0.1')
+plt.show()
+print(p)
 
 
 
