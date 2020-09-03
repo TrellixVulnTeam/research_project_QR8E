@@ -71,14 +71,17 @@ df.columns=l2
 #set the correlated data
 #cor = df[['43'], '76','25','77','83','24','87','82','80','46',
 #         '45','74','42','57','64','73','69','65','58','70','22','75'].corr(df['24','47','23', '69', '22', '26','27','68'])
-cor=df.corr()
-cor_now=cor.loc['0']
-
-p=cor_now.values.reshape(69,1)
-sns.heatmap(p,  linecolor='black', linewidths='0.01',)
+cor=df[[ '1', '2', '15', '20','28','47','48','49']].corr()
+print(cor)
+#get the colomn
+####cor_now=cor.loc[['0', '1', '2', '15', '20','28','47','48','49']]
+####print(cor_now)
+#get the row
+####cor_now=cor_now.loc[['0', '1', '2', '15', '20','28','47','48','49']]
+####p=cor_now.values.reshape(10,10)
+####sns.heatmap(p,  linecolor='black', linewidths='0.01',)
+sns.heatmap(cor,  linecolor='black', linewidths='0.01',annot = True)
 plt.show()
-print(p)
-
 
 
 

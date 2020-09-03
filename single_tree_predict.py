@@ -28,7 +28,8 @@ data = data[:, 21:90]
 # data=np.delete(data,[22,23,24,25],axis=1)
 #####uniquc feature by pearson[0,1,2,3,5,6,47,48,49]
 #x = data[:,[0,1,2,3,5,6,47,48,49]]
-x = data
+x = data[:,[1,2,15,20,48]]
+#could add 48
 y = target
 
 # fit the data to model 100 trees not enough
@@ -170,9 +171,13 @@ print(sorted(zip(map(lambda x: round(x, 4), ff_imp_avg), x_pos,map(lambda x: rou
 #max_depth
 #max_features
 #set parameters
-e=[150,200,300]
-d=[4,5,6,7]
-f=[1,2,5]
+#e=[150,200,300]
+#d=[4,5,6,7]
+#f=[1,2,5]
+
+e=[200]
+d=[5]
+f=[1]
 bestpara=[1e5 for _ in range(4)]
 for i in range(len(e)):
     for j in range(len(d)):
