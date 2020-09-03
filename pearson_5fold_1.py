@@ -75,7 +75,7 @@ cor=df.corr()
 cor_now=cor.loc['0']
 
 p=cor_now.values.reshape(69,1)
-sns.heatmap(p,  linecolor='black', linewidths='0.1')
+sns.heatmap(p,  linecolor='black', linewidths='0.01',)
 plt.show()
 print(p)
 

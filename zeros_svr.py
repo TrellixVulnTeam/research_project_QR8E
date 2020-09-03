@@ -50,6 +50,8 @@ data=np.stack( data, axis=0 )
 data = data[:, 21:90]
 x_temp=data;
 y=target;
+#let the print print all the data, no ....
+#np.set_printoptions(threshold=np.inf)
 '''
 #manual separate
 #80% for train
@@ -106,7 +108,6 @@ x=x_temp/x_std[:,None]
 #need to choose variable
 #rf=LinearSVR(C=10000, epsilon=0.2, max_iter=10000000.0, tol=0.1)
 #rf=LinearSVR(max_iter=10000000.0)
-x=x[:,0:90]
 #print(x.shape)
 
 #rfe = RFE(rf,n_features_to_select=1)
@@ -124,11 +125,13 @@ def cvtrain(splitarr,i,j,k):
     rf = LinearSVR(C=i, epsilon=j, tol=k, max_iter=10000000.0)
     rfe = RFE(rf, n_features_to_select=1)
     for train_index , test_index in kf.split(splitarr):
+
         #set up train and test set
         traind=x[train_index,:]
         traint=y[train_index]
         testd=x[test_index,:]
         testt=y[test_index]
+        #print(traind.shape)
         #train and get rmse
         rfe.fit(traind, traint)
         rmse.append(sqrt(mean_squared_error(testt, rfe.predict(testd))))
@@ -183,7 +186,8 @@ def cvtrain(splitarr,i,j,k):
 '''
 
 
-print(cvtrain(splitarr,5000,0.2,0.1))
+#print(cvtrain(splitarr,5000,0.2,0.1))
+
 #print(cvtrain(splitarr,5000,0.2,0.1))
 #print(cvtrain(splitarr,10000,0.2,0.1))
 #print(cvtrain(splitarr,20000,0.2,0.1))
@@ -224,8 +228,22 @@ plt.show()
 fig.savefig('correlation.png')
 '''
 
+'''
+#training-test part
+rf = LinearSVR(C=5000, epsilon=0.2, tol=0.1, max_iter=10000000.0)
+rfe = RFE(rf, n_features_to_select=1)
+
+rfe.fit(x, y)
+print(rfe.ranking_)
+names=np.arange(0,69,1).tolist()
+print(sorted(zip(map(lambda x: round(x, 4), rfe.ranking_), names)))
+'''
 
 
+
+
+
+#222
 #self-written grid search for parameter
 c=[1000,2000,5000,10000,5*1e4,1e5,1e6,1e7]
 e=[0,0.1,0.2,0.5,1,2]

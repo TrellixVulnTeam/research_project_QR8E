@@ -62,16 +62,19 @@ for train_index , test_index in kf.split(splitarr):
     i=1
     #set up train and test set
     #training data and target
-    #####traind=x[train_index,:]
-    #####traint=y[train_index]
+    traind=x[train_index,:]
+    traint=y[train_index]
     #testing data and target
-    ######testd=x[test_index,:]
-    ######testt=y[test_index]
+    testd=x[test_index,:]
+    testt=y[test_index]
 
+
+    ###used as all features
     traind=x[:]
     traint = y[:]
     testd = x[:]
     testt = y[:]
+
     #train and get rmse
     df = pd.DataFrame(testd)
     # Using Pearson Correlation
@@ -80,7 +83,7 @@ for train_index , test_index in kf.split(splitarr):
     cor = df.corr()#find the correlation with itself
     start_point = randint(0, 69, 1)#generate start point,will be a selected point
     start_point = start_point[0]
-    start_point=40
+    start_point=0
     print(start_point)
     #function: use to find the correlated(linear) feature
     ##lower half of the tri
@@ -92,7 +95,7 @@ for train_index , test_index in kf.split(splitarr):
             #so if use 0.8 then more column will be selected and mark as depended
             #meaning:this colmn has at least 1 very strong correlation to other
             #to do: need to start from other position
-            if abs(cor.iloc[i,j])>0.9:
+            if abs(cor.iloc[i,j])>0.8:
                 colname = cor.columns[i]
                 corr_col.append(colname)
                 collect.append([i,j])
@@ -101,7 +104,7 @@ for train_index , test_index in kf.split(splitarr):
     for i in range(0,start_point):
         for j in range(i+1,len(cor.columns)):
             #check left-down side
-            if abs(cor.iloc[i,j])>0.9:
+            if abs(cor.iloc[i,j])>0.8:
                 colname = cor.columns[i]
                 corr_col.append(colname)
                 collect.append([i,j])

@@ -160,8 +160,8 @@ def cvtrain(splitarr,i,j,k):
         #the_ranking.append(sorted(zip(map(lambda x: round(x, 4), rfe.ranking_), names)))
         t = t + 1
     #return [rmse,the_ranking]
-    plt.show()
-    fig1.savefig('5-fold prediction-svr.png')
+    #plt.show()
+    #fig1.savefig('5-fold prediction-svr.png')
     #print(rmse)
     return np.average(rmse)
 #print(cvtrain(splitarr,5000,0.2,0.1))
@@ -210,6 +210,7 @@ fig.savefig('correlation.png')
 c=[5*1e4,1e5,1e6,1e7]
 e=[0.1,0.2,0.5,0.7,1,2]
 t=[0.001,0.1]
+
 bestpara=[1e5 for _ in range(4)]
 for i in range(len(c)):
     for j in range(len(e)):
